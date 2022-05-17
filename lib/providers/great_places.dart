@@ -32,7 +32,7 @@ class GreatPlaces with ChangeNotifier {
               image: File(
                 e['image'],
               ),
-              location: PlaceLocation(latitude: 2.0, longitude: 2.0)),
+              location: const PlaceLocation(latitude: 2.0, longitude: 2.0)),
         )
         .toList();
     notifyListeners();
