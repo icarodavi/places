@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:places/utils/db_util.dart';
 
 import '../models/places.dart';
 
@@ -20,6 +21,23 @@ class GreatPlaces with ChangeNotifier {
     return _items[index];
   }
 
+  Future<void> loadPlaces() async {
+    _items = [];
+    final dataList = await DbUtil.getData('places');
+    _items = dataList
+        .map(
+          (e) => Place(
+              id: e['id'],
+              title: e['title'],
+              image: File(
+                e['image'],
+              ),
+              location: PlaceLocation(latitude: 2.0, longitude: 2.0)),
+        )
+        .toList();
+    notifyListeners();
+  }
+
   void addPlace(String title, File image) {
     final newPlace = Place(
       id: Random().nextDouble().toString(),
@@ -28,6 +46,11 @@ class GreatPlaces with ChangeNotifier {
       location: PlaceLocation(latitude: 2.0, longitude: 2.0),
     );
     _items.add(newPlace);
+    DbUtil.insert('places', {
+      'id': newPlace.id,
+      'title': newPlace.title,
+      'image': newPlace.image.path,
+    });
     notifyListeners();
   }
 }
