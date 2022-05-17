@@ -6,6 +6,8 @@
 	<string>We need to use Library to access the pictures saved on phone</string>
 	<key>NSCameraUsageDescription</key>
 	<string>We need to use camera to save pictures of the place</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need to get your location to save pictures of the place</string>
 	
 	
 	
