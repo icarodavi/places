@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:places/providers/great_places.dart';
 import 'package:places/widgets/image_input.dart';
+import 'package:provider/provider.dart';
 
 class PlaceFormScreen extends StatefulWidget {
   const PlaceFormScreen({Key? key}) : super(key: key);
@@ -11,11 +15,22 @@ class PlaceFormScreen extends StatefulWidget {
 class _PlaceFormScreenState extends State<PlaceFormScreen> {
   final _formKey = GlobalKey<FormState>();
   final _formData = <String, Object>{};
+  final _titleController = TextEditingController();
+  File? _pickedImage;
 
-  void _submitForm() {}
+  void _selectImage(File pickedImage) {
+    _pickedImage = pickedImage;
+  }
+
+  void _submitForm() {
+    if (_titleController.text.isEmpty || _pickedImage == null) return;
+    Provider.of<GreatPlaces>(context, listen: false)
+        .addPlace(_titleController.text, _pickedImage as File);
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final _titleController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         title: const Text('NOVO'),
@@ -40,7 +55,7 @@ class _PlaceFormScreenState extends State<PlaceFormScreen> {
                     const SizedBox(
                       height: 10,
                     ),
-                    const ImageInput(),
+                    ImageInput(_selectImage),
                   ],
                 ),
               ),
@@ -48,9 +63,12 @@ class _PlaceFormScreenState extends State<PlaceFormScreen> {
                 onPressed: _submitForm,
                 color: Theme.of(context).colorScheme.secondary,
                 textColor: Theme.of(context).colorScheme.primary,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [Icon(Icons.add), Text('Adicionar')],
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [Icon(Icons.add), Text('Adicionar')],
+                  ),
                 ),
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
