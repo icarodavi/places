@@ -65,7 +65,9 @@ class _PlaceFormScreenState extends State<PlaceFormScreen> {
                     TextField(
                       controller: _titleController,
                       decoration: const InputDecoration(labelText: 'Título'),
-                      onChanged: (text) => setState(() {}),
+                      onChanged: (text) {
+                        setState(() {});
+                      },
                     ),
                     const SizedBox(
                       height: 10,
@@ -79,7 +81,7 @@ class _PlaceFormScreenState extends State<PlaceFormScreen> {
                 ),
               ),
               MaterialButton(
-                onPressed: isValidForm() ? _submitForm : null,
+                onPressed: !isValidForm() ? null : _submitForm,
                 color: Theme.of(context).colorScheme.secondary,
                 textColor: Theme.of(context).colorScheme.primary,
                 child: Padding(

@@ -35,7 +35,7 @@ class _LocationInputState extends State<LocationInput> {
       MaterialPageRoute(
         fullscreenDialog: true,
         builder: (context) => currentLocation == null
-            ? MapScreen()
+            ? const MapScreen()
             : MapScreen(initialLocation: currentLocation!),
       ),
     );
