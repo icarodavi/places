@@ -13,12 +13,15 @@ class LocationInput extends StatefulWidget {
 
 class _LocationInputState extends State<LocationInput> {
   String? _previewImageUrl;
+  PlaceLocation? currentLocation;
 
   Future<void> _selectOnMap() async {
     final selectedLocation = await Navigator.of(context).push(
       MaterialPageRoute(
         fullscreenDialog: true,
-        builder: (context) => MapScreen(),
+        builder: (context) => MapScreen(
+          initialLocation: currentLocation!,
+        ),
       ),
     );
 
@@ -33,8 +36,20 @@ class _LocationInputState extends State<LocationInput> {
 
     setState(() {
       _previewImageUrl = staticImageUrl;
+      currentLocation = PlaceLocation(
+          latitude: locationData.latitude as double,
+          longitude: locationData.longitude as double);
     });
   }
+
+  // @override
+  // void didChangeDependencies() async {
+  //   super.didChangeDependencies();
+  //   final location = await Location().getLocation();
+  //   setState(() {
+  //     currentLocation = location;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
